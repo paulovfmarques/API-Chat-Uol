@@ -1,0 +1,24 @@
+{
+  "name": "chat-uol",
+  "version": "1.0.0",
+  "description": "",
+  "main": "/servidor.js",
+  "scripts": {
+    "dev": "webpack serve"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.5",
+    "babel-loader": "^8.2.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dayjs": "^1.9.6",
+    "express": "^4.17.1",
+    "string-strip-html": "^6.3.0",
+    "styled-components": "^5.2.1"
+  }
+}
