@@ -11,21 +11,32 @@ server.use(cors());
 let participants = [];
 let messages = [];
 
-if (fs.existsSync("data/participants.json"))
-  participants = JSON.parse(fs.readFileSync("data/participants.json"));
 if (fs.existsSync("data/messages.json"))
   messages = JSON.parse(fs.readFileSync("data/messages.json"));
+if (fs.existsSync("data/participants.json"))
+  fs.writeFileSync("data/participants.json", JSON.stringify([]));
 
 //--------Remove Inactive Participant--------------
 
 setInterval(() => {
   let maxTime = 10000;
   if (participants.length === 0 || undefined || null) return;
-  participants = participants.filter(
-    (p) => maxTime > Date.now() - p.lastStatus
-  );
-  fs.writeFileSync("participants.json", JSON.stringify(participants));
-}, 15000);
+  participants = participants.filter((p) => {
+    if (maxTime < Date.now() - p.lastStatus) {
+      let exitMessage = {
+        from: p.name,
+        to: "Todos",
+        text: "Saiu da sala...",
+        type: "status",
+        time: dayjs().format("HH:mm:ss"),
+      };
+      messages.push(exitMessage);
+      return false;
+    } else return true;
+  });
+  fs.writeFileSync("data/messages.json", JSON.stringify(messages));
+  fs.writeFileSync("data/participants.json", JSON.stringify(participants));
+}, 3000);
 
 //------------------Server Routes------------------
 
@@ -38,7 +49,7 @@ server.get("/participants", (req, res) => {
 server.post("/participants", (req, res) => {
   let { name } = req.body;
   let nameAlreadyInUse = false;
-  name = stripHtml(name).result;
+  name = stripHtml(name).result.trim();
 
   nameAlreadyInUse = participants.some((p) => p.name === name);
 
@@ -86,7 +97,7 @@ server.post("/messages", (req, res) => {
   let participantExists = false;
   from = stripHtml(from).result;
   to = stripHtml(to).result;
-  text = stripHtml(text).result;
+  text = stripHtml(text).result.trim();
   type = stripHtml(type).result;
 
   if (to !== "Todos")
@@ -117,7 +128,7 @@ server.post("/messages", (req, res) => {
 server.post("/status", (req, res) => {
   let { name } = req.body;
   let participantExists = false;
-  name = stripHtml(name).result;
+  name = stripHtml(name).result.trim();
 
   participantExists = participants.some((p) => p.name === name);
   if (!participantExists) return res.sendStatus(400);
