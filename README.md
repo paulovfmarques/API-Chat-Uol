@@ -5,7 +5,7 @@
 API Chat Uol
 </h1>
 
-<p align="center">A little description about your project</p>
+<p align="center">A simple API for a chat platform</p>
 
 <p align="center">
   <a href="https://opensource.org/licenses/MIT">
@@ -15,13 +15,39 @@ API Chat Uol
 
 ## Features
 [//]: # (Add the features of your project here:)
-This app features all the latest tools and practices in mobile development!
+This API features the following tecnology:
 
 - 💹 **Node Js** — A web framework for Node Js
 
 ## Getting started
 
-Describe here the way to use/install your project
+Move yourself to the project directory:
+
+1. Run <strong>npm install</strong>;
+2. Run <strong>node servidor.js</strong>;
+3. Open http://localhost:3000/:route on your browser, if you'd like to see any specific route;
+4. Use https://www.postman.com/ to be able to GET/POST on any given route;
+
+<strong>Routes:</strong>
+
+/participants:
+<br>
+--POST: expects a {name} object;
+<br>
+--GET:expects nothing.
+<br>
+
+/messages:
+<br>
+--POST: expects { from, to, text, type }, being the type a "message", "private_message" or "status";
+<br>
+--GET: requires a headers with {"user-name"}, the value being the user logged onto the chat;
+<br>
+  
+/status:
+<br>
+--POST: expects a {name} object;
+<br>
 
 
 ## License
